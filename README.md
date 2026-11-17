@@ -37,3 +37,5 @@ The analysis explored:
 
 ## Project File
 The complete SQL queries are available in `World_Layoffs_SQL_Project.sql`.
+## Credits
+- Tutorial and dataset reference: Alex The Analyst.
