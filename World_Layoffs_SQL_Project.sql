@@ -126,7 +126,7 @@ set industry = null
 where industry ='';
 
 
-select distinct industry from layoffs_staging  ;
+select distinct industry from layoffs_staging2  ;
 
 
 select *
@@ -228,13 +228,13 @@ select max(total_laid_off) from layoffs_staging2;
 
 
 select * from layoffs_staging2
-where  percentage_laid_off = 1
+where  cast(percentage_laid_off as decimal(10,4)) = 1
 order by total_laid_off desc;
 
 
 
 select * from layoffs_staging2
-where  percentage_laid_off = 1
+where  cast(percentage_laid_off as decimal(10,4)) = 1
 order by funds_raised_millions desc;
 
 
@@ -264,10 +264,10 @@ group by 1
 order by 2 desc;
 
 
-select company ,sum(percentage_laid_off)
-from layoffs_staging2
-group by 1
-order by 2 desc;
+
+
+
+
 
 
 select substring(`date`,1,7) as `month` , 
@@ -285,8 +285,7 @@ where substring(`date`,1,7) is not null
 group by 1
 order by 1 asc
 )
-select *,sum(total_off) over(order by`month`) as ROLLING_TOTAL from rolling_total ;
-
+select *,sum(total_off) over(order by`month`) as ROLLING_TOTAL from rolling_total order by `month`;
 select company,year(`date`),sum(total_laid_off)
 from layoffs_staging2
 group by company,year(`date`)
@@ -300,7 +299,7 @@ order by 1;
 select * from layoffs_staging2;
 
 
-select max(total_laid_off),max(percentage_laid_off)
+select max(total_laid_off),max(cast(percentage_laid_off as decimal(10,4)))
 from layoffs_staging2;
 
 
@@ -362,7 +361,7 @@ group by company , year(`date`)
 (select * ,dense_rank() over(partition by years order by total_laid_off desc ) as ranking
 from company_year 
 where years is not null
-order by ranking)
+)
 SELECT *
 FROM Company_Year_Rank
 WHERE ranking <=  5
